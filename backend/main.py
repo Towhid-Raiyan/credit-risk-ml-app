@@ -2,15 +2,24 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import json
+import os
 from pathlib import Path
 
 from .schemas import CreditInput
 from .model import predict_with_shap
 
 # Base directory
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load training feature names
+# # Load training feature names
+# FEATURE_PATH = BASE_DIR / "models" / "feature_names.json"
+# with open(FEATURE_PATH, "r") as f:
+#     FEATURE_NAMES = json.load(f)
+
+##########################
+
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent
 FEATURE_PATH = BASE_DIR / "models" / "feature_names.json"
 with open(FEATURE_PATH, "r") as f:
     FEATURE_NAMES = json.load(f)
