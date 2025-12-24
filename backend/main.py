@@ -1,15 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import pandas as pd
-import joblib
 import json
+from pathlib import Path
 
-# Load model
-model = joblib.load("models/xgboost_model.pkl")
+from .schemas import CreditInput
+from .model import predict_with_shap
+
+# Base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load training feature names
-with open("models/feature_names.json", "r") as f:
+FEATURE_PATH = BASE_DIR / "models" / "feature_names.json"
+with open(FEATURE_PATH, "r") as f:
     FEATURE_NAMES = json.load(f)
 
 app = FastAPI()
@@ -23,27 +26,12 @@ app.add_middleware(
 )
 
 
-# INPUT SCHEMA (HUMAN)
-
-class CreditInput(BaseModel):
-    Age: int
-    Credit_amount: float
-    Duration: int
-    Sex: str                   # male / female
-    Job: int                   # 0,1,2,3
-    Housing: str               # own / rent / free
-    Saving_accounts: str       # little / moderate / rich / unknown
-    Purpose: str               # car / education / furniture / radio_TV / repairs
-
-
 @app.get("/")
 def root():
     return {"status": "Backend running successfully"}
 
 
-# PREPROCESS FUNCTION
-
-def preprocess_input(data: CreditInput):
+def preprocess_input(data: CreditInput) -> pd.DataFrame:
     raw = data.dict()
 
     processed = {
@@ -53,6 +41,7 @@ def preprocess_input(data: CreditInput):
         "Job": raw["Job"],
     }
 
+    # One-hot encoding
     processed[f"Sex_{raw['Sex']}"] = 1
     processed[f"Housing_{raw['Housing']}"] = 1
     processed[f"Saving accounts_{raw['Saving_accounts']}"] = 1
@@ -66,17 +55,16 @@ def preprocess_input(data: CreditInput):
 
     return pd.DataFrame([final_input])
 
-
 # PREDICTION ENDPOINT
 
 @app.post("/predict")
 def predict_risk(data: CreditInput):
     input_df = preprocess_input(data)
 
-    prediction = model.predict(input_df)[0]
-    probability = model.predict_proba(input_df)[0][1]
+    result = predict_with_shap(input_df)
 
     return {
-        "risk": "High Risk" if prediction == 1 else "Low Risk",
-        "probability": round(float(probability), 4)
+        "risk": "High Risk" if result["prediction"] == 1 else "Low Risk",
+        "probability": round(result["probability"], 4),
+        "shap_values": result["shap_values"]
     }
