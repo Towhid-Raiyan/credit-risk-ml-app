@@ -34,10 +34,11 @@ The matrix reveals a conservative lending approach, prioritizing the identificat
 
 ## 📂 Project Structure
 
-├── backend/    # FastAPI implementation & model inference logic
-├── frontend/   # React components & UI state management
-├── models/     # Serialized XGBoost model (.pkl) & feature metadata (.json)
-└── notebooks/  # Exploratory Data Analysis & XGBoost/SHAP development
+```text
+├── backend/    # FastAPI API and model inference logic
+├── frontend/   # React.js UI and visualizations
+├── models/     # Serialized XGBoost model (.pkl)
+└── notebooks/  # EDA and SHAP development
 
 ## 🔗 Deployment Links
 
