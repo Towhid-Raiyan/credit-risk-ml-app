@@ -20,7 +20,9 @@ from .model import predict_with_shap
 
 CURRENT_DIR = Path(__file__).resolve().parent
 BASE_DIR = CURRENT_DIR.parent
-FEATURE_PATH = BASE_DIR / "models" / "feature_names.json"
+MODEL_PATH = os.path.join(BASE_DIR, "models", "xgboost_model.pkl")
+FEATURE_PATH = os.path.join(BASE_DIR, "models", "feature_names.json")
+# FEATURE_PATH = BASE_DIR / "models" / "feature_names.json"
 with open(FEATURE_PATH, "r") as f:
     FEATURE_NAMES = json.load(f)
 

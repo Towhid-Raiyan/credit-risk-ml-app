@@ -3,14 +3,19 @@ import joblib
 import shap
 import pandas as pd
 from pathlib import Path
+import os
 
-# Base project directory
+CURRENT_DIR = Path(__file__).resolve().parent
+BASE_DIR = CURRENT_DIR.parent
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load trained model
-MODEL_PATH = BASE_DIR / "models" / "xgboost_model.pkl"
+# MODEL_PATH = BASE_DIR / "models" / "xgboost_model.pkl"
+MODEL_PATH = os.path.join(BASE_DIR, "models", "xgboost_model.pkl")
 model = joblib.load(MODEL_PATH)
 
+FEATURE_PATH = os.path.join(BASE_DIR, "models", "feature_names.json")
 # Feature names from model
 FEATURE_NAMES = model.get_booster().feature_names
 
