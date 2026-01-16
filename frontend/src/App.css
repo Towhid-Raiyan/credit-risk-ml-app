@@ -1,75 +1,126 @@
+
 body {
   font-family: "Segoe UI", sans-serif;
   background: #f4f6f8;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-.card {
+/* === MAIN LAYOUT === */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* === CARD STYLES === */
+.card,
+.result-card {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* === FORM GRID === */
 .grid {
   display: grid;
   grid-template-columns: 200px 1fr;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
 }
 
+/* === INPUTS === */
 input,
 select {
   width: 100%;
-  height: 44px;              /* 🔥 FORCE SAME HEIGHT */
+  height: 44px;
   padding: 8px 12px;
   font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   box-sizing: border-box;
 }
 
-
+/* === BUTTON === */
 .predict-btn {
-  margin-top: 20px;
+  margin-top: 24px;
   width: 100%;
   background: #5790e7;
   border: none;
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
   font-weight: bold;
+  color: white;
   cursor: pointer;
+  border-radius: 6px;
 }
 
 .predict-btn:hover {
   background: #316dc6;
 }
 
-.result-card {
-  background: white;
-  padding: 20px;
-  margin-top: 30px;
-  border-radius: 8px;
-}
-
+/* === RESULT === */
 .risk-low {
-  color: green;
+  color: #1a7f37;
 }
 
 .risk-high {
-  color: red;
+  color: #d1242f;
+}
+
+.result-placeholder {
+  color: #777;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+/* === LOADER === */
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 5px solid #ddd;
+  border-top: 5px solid #5790e7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 14px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error {
   color: red;
   margin-top: 10px;
+  text-align: center;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
 }
