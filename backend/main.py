@@ -65,5 +65,6 @@ def predict_risk(data: CreditInput):
     return {
         "risk": "High Risk" if result["prediction"] == 1 else "Low Risk",
         "probability": round(result["probability"], 4),
-        "shap_values": result["shap_values"]
+        "shap_values": result["shap_values"],
+        "explanation": result["explanation"],
     }

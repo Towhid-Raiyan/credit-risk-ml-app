@@ -25,16 +25,19 @@ function App() {
   const [result, setResult] = useState(null);
   const [shapData, setShapData] = useState([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // 🔥 NEW
+  const [loading, setLoading] = useState(false);
+  const [explanation, setExplanation] = useState("");
+ 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
+    setExplanation("");
     setError("");
     setResult(null);
-    setLoading(true); // 🔥 START LOADING
+    setLoading(true);
 
     try {
       const API_BASE_URL =
@@ -56,6 +59,8 @@ function App() {
 
       const data = await response.json();
       setResult(data);
+      setExplanation(data.explanation || "");
+
 
       const shapArray = Object.entries(data.shap_values)
         .map(([key, value]) => ({
@@ -176,6 +181,12 @@ function App() {
               <p>Probability: {result.probability}</p>
 
               <h3>Why this decision?</h3>
+
+              {explanation && (
+                <div className="explanation-box">
+                  <p>{explanation}</p>
+                </div>
+              )}
 
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={shapData} layout="vertical">

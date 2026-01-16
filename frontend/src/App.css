@@ -124,3 +124,13 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+.explanation-box {
+  background: #f1f5ff;
+  border-left: 4px solid #5790e7;
+  padding: 12px 16px;
+  margin: 14px 0 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+}
